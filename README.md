@@ -1,8 +1,10 @@
 Resourceful
 ===========
-[![Build Status](https://travis-ci.org/jdesrosiers/resourceful.svg?branch=master)](https://travis-ci.org/jdesrosiers/resourceful)
-[![Code Coverage](https://scrutinizer-ci.com/g/jdesrosiers/resourceful/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jdesrosiers/resourceful/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jdesrosiers/resourceful/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jdesrosiers/resourceful/?branch=master)
+[![Build Status](https://travis-ci.org/e-artspace/resourceful.svg?branch=master)](https://travis-ci.org/e-artspace/resourceful)
+[![Code Coverage](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
+
+This is a fork of jdesrosiers/resourceful project.
 
 Resourceful is a simple framework designed for rapid prototyping REST/HTTP applications that are mostly CRUD operations.
 It is driven off of JSON Hyper-Schemas.  You use Hyper-Schemas to define your resources and their relationships with
