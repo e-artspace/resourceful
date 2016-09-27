@@ -1,11 +1,11 @@
 <?php
 
-namespace JDesrosiers\Resourceful\IndexControllerProvider\Test;
+namespace Resourceful\IndexControllerProvider\Test;
 
-use JDesrosiers\Resourceful\IndexControllerProvider\IndexControllerProvider;
-use JDesrosiers\Resourceful\Resourceful;
-use JDesrosiers\Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider;
-use JDesrosiers\Resourceful\SchemaControllerProvider\SchemaControllerProvider;
+use Resourceful\IndexControllerProvider\IndexControllerProvider;
+use Resourceful\Resourceful;
+use Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider;
+use Resourceful\SchemaControllerProvider\SchemaControllerProvider;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;

@@ -1,8 +1,8 @@
 <?php
 
-namespace JDesrosiers\Resourceful\ResourcefulServiceProvider;
+namespace Resourceful\ResourcefulServiceProvider;
 
-use JDesrosiers\Resourceful\JsonErrorHandler\JsonErrorHandler;
+use Resourceful\JsonErrorHandler\JsonErrorHandler;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;

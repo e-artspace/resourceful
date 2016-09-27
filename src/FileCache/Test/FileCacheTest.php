@@ -1,8 +1,8 @@
 <?php
 
-namespace JDesrosiers\Resourceful\FileCache\Test;
+namespace Resourceful\FileCache\Test;
 
-use JDesrosiers\Resourceful\FileCache\FileCache;
+use Resourceful\FileCache\FileCache;
 use Symfony\Component\Filesystem\Filesystem;
 
 class FileCacheTest extends \PHPUnit_Framework_TestCase

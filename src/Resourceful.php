@@ -1,6 +1,6 @@
 <?php
 
-namespace JDesrosiers\Resourceful;
+namespace Resourceful;
 
 use JDesrosiers\Silex\Provider\ContentNegotiationServiceProvider;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;

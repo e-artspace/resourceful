@@ -1,8 +1,8 @@
 <?php
 
-namespace JDesrosiers\Resourceful\Controller\Test;
+namespace Resourceful\Controller\Test;
 
-use JDesrosiers\Resourceful\Controller\DeleteResourceController;
+use Resourceful\Controller\DeleteResourceController;
 use PHPUnit_Framework_TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;

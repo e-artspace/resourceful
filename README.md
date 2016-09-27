@@ -4,7 +4,7 @@ Resourceful
 [![Code Coverage](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 
-This is a fork of jdesrosiers/resourceful project.
+This is a fork of [jdesrosiers/resourceful project](https://github.com/jdesrosiers/resourceful) project by Jason Desrosiers to fix some bug and improve testability.
 
 Resourceful is a simple framework designed for rapid prototyping REST/HTTP applications that are mostly CRUD operations.
 It is driven off of JSON Hyper-Schemas.  You use Hyper-Schemas to define your resources and their relationships with
@@ -15,7 +15,7 @@ How it Works
 ------------
 Install Resourceful using composer
 ```
-> composer require jdesrosiers/resourceful
+> composer require e-artspace/resourceful
 ```
 
 Define your front controller.
@@ -24,18 +24,18 @@ Define your front controller.
 
 require __DIR__ . "/../vendor/autoload.php";
 
-$app = new JDesrosiers\Resourceful\Resourceful();
+$app = new Resourceful\Resourceful();
 $app["debug"] = true;
 
-$app->register(new JDesrosiers\Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
-    "resourceful.schemaStore" => new JDesrosiers\Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
+$app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
+    "resourceful.schemaStore" => new Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
 ));
 
-$app["data"] = new JDesrosiers\Resourceful\FileCache\FileCache(__DIR__ . "/../data");
+$app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
 
 // Supporting Controllers
-$app->mount("/schema", new JDesrosiers\Resourceful\SchemaControllerProvider\SchemaControllerProvider());
-$app->mount("/", new JDesrosiers\Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
+$app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
+$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
 
 $app->flush();
 // Start Registering Controllers
@@ -60,7 +60,7 @@ links to this default index schema as you add resources.  These links wil give y
 
 Adding a new resource to your application, requires only one line of code in your front controller.
 ```php
-$app->mount("/foo", new JDesrosiers\Resourceful\CrudControllerProvider\CrudControllerProvider("foo", $app["data"]));
+$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("foo", $app["data"]));
 ```
 
 This adds the "foo" resource using the CrudControllerProvider.  The first argument is the name of the type.  The second
@@ -151,3 +151,42 @@ The silex-cors-provider is primarily used for generating OPTIONS routes.  Howeve
 I chose to use Doctrine Cache for data storage.  They have a wide range of implementations, so you can choose
 how you want to store your data.  Some options include the filesystem, memcache, or redis.  If none of these meet your
 needs you can always write your own `Doctrine\Common\Cache\Cache` implementation.
+
+# Developing and Testing
+
+Before begin be sure to have:
+
+- a virus free workstation with a fresh OS (windows, MAC, Linux)
+- at least 1GB Ram
+- a processor with virtualization support
+- an editor of your choice able read unix-style line endings docs (i.e. notepad++)
+  
+Local workstation installation process:
+
+- in windows env install [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) with pageant & plint
+- install [GIT](http://git-scm.com/). Select “checkout as is , commit Unix-style line endings”. If your workstation is windows based and you to want to use pageant for authentication, in windows use putty plint interface as ssh proxy or reconfigure GIT to use ssh tool if needed.
+- install [Vagrant](https://www.vagrantup.com/)
+- install [Virtualbox](https://www.virtualbox.org/)
+
+You are free to optionally install your preferred language ide (aptana, eclipse, other)
+
+
+## Using resourceful from a git checkout
+
+The following commands can be used to perform the initial checkout of resourceful project:
+
+```shell
+git clone https://yourid@bitbucket.org/e-artspace/resourceful.git
+cd resourceful
+vagrant up
+vagrant ssh
+cd /vagrant
+vendor/bin/phpunit
+```
+
+to destroy dev/test env:
+```shell
+vagrant destroy
+```
+
+

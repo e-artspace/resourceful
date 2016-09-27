@@ -1,8 +1,8 @@
 <?php
 
-namespace JDesrosiers\Resourceful\JsonErrorHandler\Test;
+namespace Resourceful\JsonErrorHandler\Test;
 
-use JDesrosiers\Resourceful\JsonErrorHandler\JsonErrorHandler;
+use Resourceful\JsonErrorHandler\JsonErrorHandler;
 use PHPUnit_Framework_TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;

@@ -1,10 +1,10 @@
 <?php
 
-namespace JDesrosiers\Resourceful\SchemaControllerProvider\Test;
+namespace Resourceful\SchemaControllerProvider\Test;
 
-use JDesrosiers\Resourceful\Resourceful;
-use JDesrosiers\Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider;
-use JDesrosiers\Resourceful\SchemaControllerProvider\SchemaControllerProvider;
+use Resourceful\Resourceful;
+use Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider;
+use Resourceful\SchemaControllerProvider\SchemaControllerProvider;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;

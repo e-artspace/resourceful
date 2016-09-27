@@ -1,6 +1,6 @@
 <?php
 
-namespace JDesrosiers\Resourceful\Controller;
+namespace Resourceful\Controller;
 
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\HttpFoundation\JsonResponse;
