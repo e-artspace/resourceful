@@ -25,8 +25,9 @@ class CreateResourceController
     {
         $requestJson = $request->getContent() ?: "{}";
         $data = json_decode($requestJson);
-        $data->id = $app["uniqid"];
-
+		if(!isset($data->id)) {
+			$data->id = $app["uniqid"];
+		}
         $this->validate($app, $data);
 
         $location = $app["url_generator"]->generate($this->schema, array("id" => $data->id));

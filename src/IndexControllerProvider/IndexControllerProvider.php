@@ -19,14 +19,12 @@ class IndexControllerProvider implements ControllerProviderInterface
         $this->service = $service;
     }
 
-    public function connect(Application $app)
+    public function connect(Application $app, $mountpoint='')
     {
-        $schema = $app["url_generator"]->generate("schema", array("type" => "index"));
+        $schema = $mountpoint. '/schema/index';//$app["url_generator"]->generate("schema", array("type" => "index"));
         $resource = $app["resources_factory"]($schema);
-
         $app["twig.loader"]->addLoader(new Twig_Loader_Filesystem(__DIR__ . "/templates"));
         $app->before(new AddSchema($schema, "index"));
-
         // Generate default Index resource
         $resource->before(function (Request $request, Application $app) {
             $index = $app["url_generator"]->generate("index");
@@ -34,9 +32,7 @@ class IndexControllerProvider implements ControllerProviderInterface
                 $this->service->save($index, json_decode($app["twig"]->render("default.json.twig")));
             }
         });
-
         $resource->get("/", new GetResourceController($this->service))->bind("index");
-
         return $resource;
     }
 }

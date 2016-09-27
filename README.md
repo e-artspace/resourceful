@@ -50,11 +50,11 @@ $app->run();
 
 That's it.  You are ready to get started.  Run the application using the built-in PHP server.
 ```
-> php -S localhost:8000 front.php
+> php -S localhost:8080 front.php
 ```
 
 You can use the json browser implementation at
-http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8000/.  On the first run, a folder
+http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8080/.  On the first run, a folder
 called schema is created and a default index schema and resource is created.  You are expected to add
 links to this default index schema as you add resources.  These links wil give your users a place to start.
 
