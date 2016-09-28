@@ -12,10 +12,11 @@ $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProv
 $app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
 
 // Supporting Controllers
+
 $app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
+$app->flush();
 $app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
 
-$app->flush();
 // Start Registering CRUD Controllers
 $app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("foo", $app["data"]));
 
