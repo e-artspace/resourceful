@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Use "PORT=8081 vagrant up" to change port forward to 8081 instead of the default 8080
+port = ENV['PORT'] || "8080"
+
 $script = <<-SCRIPT
 	apt-get update
 	
@@ -25,15 +28,16 @@ $script = <<-SCRIPT
 </VirtualHost>
 EOF
 	a2enmod rewrite
-	service apache2 restart
 	
 	# turn on assertion engine and display errors
-	sed -i "s/zend.assertions =.*/zend.assertions = 1/" /etc/php/7.0/cli/php.ini
-	sed -i "s/^display_errors = Off/display_errors = On/" /etc/php/7.0/cli/php.ini
+	sed -i "s/^zend.assertions%s*=.*/zend.assertions = 1/" /etc/php/7.0/cli/php.ini
+	sed -i "s/^display_errors%s*=%sOff/display_errors = On/" /etc/php/7.0/cli/php.ini
+
+	service apache2 restart
 	
 	echo "======================================================================================"
 	echo "Point your browser to:"
-	echo "http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8080/"
+	echo "http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A#{port}/"
 	echo "======================================================================================"
 	
 SCRIPT
@@ -43,5 +47,5 @@ VAGRANTFILE_API_VERSION = '2'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.box = "bento/ubuntu-16.04"  # Same of the one used by opcode chef kitchen.
 	config.vm.provision "shell", inline: $script
-	config.vm.network "forwarded_port", guest: 80, host: 8080
+	config.vm.network "forwarded_port", guest: 80, host: port
 end
