@@ -19,8 +19,9 @@ class IndexControllerProvider implements ControllerProviderInterface
         $this->service = $service;
     }
 
-    public function connect(Application $app, $schema='/schema/index')
+    public function connect(Application $app)
     {
+        $schema = $app["url_generator"]->generate("schema", array("type" => "index"));
         $resource = $app["resources_factory"]($schema);
         $app["twig.loader"]->addLoader(new Twig_Loader_Filesystem(__DIR__ . "/templates"));
         $app->before(new AddSchema($schema, "index"));
