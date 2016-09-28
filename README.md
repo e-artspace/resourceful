@@ -53,6 +53,7 @@ That's it.  You are ready to get started.  Run the application using the built-i
 > php -S localhost:8080 front.php
 ```
 
+
 You can use the json browser implementation at
 http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8080/.  On the first run, a folder
 called schema is created and a default index schema and resource is created.  You are expected to add
@@ -68,12 +69,50 @@ argument is any Doctrine Cache implementation.  Storing files on the filesystem 
 prototype, but you can choose something like memcache or redis if you prefer.  A centralized
 data storage can be useful if you are collaborating with others on this prototype.
 
+
 Once the resource is registered, a good next step is to add a link in your index schema to create a "foo".  Refresh your
 Jsonary browser and you should see the link you added to the index.  Also, a default "foo" schema was generated in your
 `/schema` folder.  Fill out your "foo" schema how you like and then use the index link you added to create a "foo".
 All CRUD operations are available for the resource.
 
 Thats all.  Just keep adding resources and links between those resources to make a useful API.
+
+
+### Developing and Testing environment
+
+A vagrant virtual appliance is available for developing and testing in a local workstation.
+
+Local workstation requirements:
+
+- install [GIT](http://git-scm.com/). Select “checkout as is , commit Unix-style line endings”.
+- install [Vagrant](https://www.vagrantup.com/)
+- install [Virtualbox](https://www.virtualbox.org/)
+
+The following commands can be used to perform the initial checkout of resourceful project:
+
+```shell
+git clone https://yourid@bitbucket.org/e-artspace/resourceful.git
+cd resourceful
+```
+
+The following commands can be used to start a virtuall appliance and execute all tests:
+
+vagrant up
+vagrant ssh
+cd /vagrant
+vendor/bin/phpunit
+```
+
+**Note that the source directory is mounted in /vagrant dir on the virtual host.**
+
+The virtual appliance http server is mapped on localhost:8080 on the workstation
+
+to destroy the virtual appliance:
+
+```shell
+vagrant destroy
+```
+
 
 Features
 --------------------
@@ -152,41 +191,5 @@ I chose to use Doctrine Cache for data storage.  They have a wide range of imple
 how you want to store your data.  Some options include the filesystem, memcache, or redis.  If none of these meet your
 needs you can always write your own `Doctrine\Common\Cache\Cache` implementation.
 
-# Developing and Testing
-
-Before begin be sure to have:
-
-- a virus free workstation with a fresh OS (windows, MAC, Linux)
-- at least 1GB Ram
-- a processor with virtualization support
-- an editor of your choice able read unix-style line endings docs (i.e. notepad++)
-  
-Local workstation installation process:
-
-- in windows env install [putty](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html) with pageant & plint
-- install [GIT](http://git-scm.com/). Select “checkout as is , commit Unix-style line endings”. If your workstation is windows based and you to want to use pageant for authentication, in windows use putty plint interface as ssh proxy or reconfigure GIT to use ssh tool if needed.
-- install [Vagrant](https://www.vagrantup.com/)
-- install [Virtualbox](https://www.virtualbox.org/)
-
-You are free to optionally install your preferred language ide (aptana, eclipse, other)
-
-
-## Using resourceful from a git checkout
-
-The following commands can be used to perform the initial checkout of resourceful project:
-
-```shell
-git clone https://yourid@bitbucket.org/e-artspace/resourceful.git
-cd resourceful
-vagrant up
-vagrant ssh
-cd /vagrant
-vendor/bin/phpunit
-```
-
-to destroy dev/test env:
-```shell
-vagrant destroy
-```
 
 
