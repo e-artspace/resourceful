@@ -4,6 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+
+## [1.0.2] 2016-09-28
+
+### Changed
+
+- some typos
+- restored original code in IndexControllerProvider and move $app->flush in the example.
+- buf fixed in Changelog
+
+
 ## [1.0.1] 2016-09-28
 
 ### Changed
@@ -24,10 +34,12 @@ First release. From original project:
 ### Changed
 
 - moved tests in a separate directory according with travis and scrutinizer standards
-- bug fixing
+- allows to force id for a created item (if not present create an unique id)
 - README improvements
 
 
-[Unreleased]: https://bitbucket.org/e-artspace/resourceful/compare/master%0D1.0.0
-[1.0.1]: https://bitbucket.org/e-artspace/resourceful/compare/1.0.1%0D1.0.0
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/e-artspace/resourceful/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/e-artspace/resourceful/compare/1.0.0...1.0.1
+
 

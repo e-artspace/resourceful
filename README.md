@@ -35,9 +35,9 @@ $app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
 
 // Supporting Controllers
 $app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
+$app->flush();
 $app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
 
-$app->flush();
 // Start Registering Controllers
 
 // End Registering Controllers
