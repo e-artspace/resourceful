@@ -95,8 +95,9 @@ git clone https://yourid@bitbucket.org/e-artspace/resourceful.git
 cd resourceful
 ```
 
-The following commands can be used to start a virtuall appliance and execute all tests:
+The following commands can be used to start a virtual appliance and execute all tests:
 
+```shell
 vagrant up
 vagrant ssh
 cd /vagrant
