@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+    "title": "Foo",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "links": [
+                {
+                    "rel": "full",
+                    "href": "/foo/{$}"
+                }
+            ]
+        },
+        "description": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "id"
+    ],
+    "additionalProperties": false,
+    "links": [
+        {
+            "rel": "delete",
+            "method": "DELETE",
+            "href": "/foo/{id}"
+        },
+        {
+            "rel": "put",
+            "method": "PUT",
+            "href": "/foo/{id}"
+        }
+    ]
+}

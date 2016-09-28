@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+    "title": "Index",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        }
+    },
+    "links": [
+        {
+        	"title": "Creates a new foo item",
+        	"schema": { "$ref":"/schema/foo" },
+            "rel": "create",
+            "method": "POST",
+            "href": "/foo/"
+        }
+    ]
+}

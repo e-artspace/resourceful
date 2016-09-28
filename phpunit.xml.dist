@@ -10,16 +10,13 @@
          syntaxCheck="false"
 >
     <testsuites>
-        <testsuite name="Resourceful Test Suite">
-            <directory>src/*/Test</directory>
+        <testsuite name="Resourceful Unit Test Suite">
+            <directory>tests/unit</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory>src</directory>
-            <exclude>
-                <directory>src/*/Test</directory>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>

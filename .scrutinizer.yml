@@ -4,7 +4,7 @@ checks:
         duplication: true
 
 filter:
-    excluded_paths: [vendor/*]
+    excluded_paths: ["vendor/*","tests/*","example/*"]
 
 build:
     environment:

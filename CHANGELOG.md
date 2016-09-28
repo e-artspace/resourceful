@@ -1,0 +1,16 @@
+# LDC Change Log
+This file is used to list changes made in each version of the ldc cookbook.
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+
+## 1.0.0 2016-09-28
+
+First release
+
+
+
+[Unreleased]: https://bitbucket.org/e-artspace/resourceful/compare/master%0D1.0.0
+[1.0.1]: https://bitbucket.org/e-artspace/resourceful/compare/1.0.1%0D1.0.0
+
