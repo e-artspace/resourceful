@@ -29,9 +29,12 @@ $script = <<-SCRIPT
 EOF
 	a2enmod rewrite
 	
-	# turn on assertion engine and display errors
-	sed -i "s/^zend.assertions%s*=.*/zend.assertions = 1/" /etc/php/7.0/cli/php.ini
-	sed -i "s/^display_errors%s*=%sOff/display_errors = On/" /etc/php/7.0/cli/php.ini
+	# turn on assertion engine and display errors both in cli and apache2 php distributions
+	phps=(cli apache2)
+	for p in ${phps[@]}; do
+		sed -i "s/^zend.assertions[[:space:]]*=.*/zend.assertions = 1/" /etc/php/7.0/$p/php.ini
+		sed -i "s/^display_errors[[:space:]]*=[[:space:]]*Off/display_errors = On/" /etc/php/7.0/$p/php.ini
+	done
 
 	service apache2 restart
 	
