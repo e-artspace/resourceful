@@ -2,7 +2,7 @@
 
 namespace Resourceful;
 
-use JDesrosiers\Resourceful\JsonErrorHandler\JsonErrorHandler;
+use Resourceful\JsonErrorHandler\JsonErrorHandler;
 use JDesrosiers\Silex\Provider\ContentNegotiationServiceProvider;
 use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use JDesrosiers\Silex\Provider\JsonSchemaServiceProvider;
