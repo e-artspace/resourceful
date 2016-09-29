@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] 2016-09-29
+
 ### Changed
 
 - git fetch upstream and  git merge upstream/master @ f5fee9a2226771b898ead2c4d31e7156796cf16f
@@ -41,7 +43,8 @@ First release. From original project:
 - README improvements
 
 
-[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.0.2...HEAD
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.0.3...HEAD
+[1.0.3]: https://github.com/e-artspace/resourceful/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/e-artspace/resourceful/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/e-artspace/resourceful/compare/1.0.0...1.0.1
 
