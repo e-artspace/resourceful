@@ -5,7 +5,7 @@ require __DIR__ . "/../../vendor/autoload.php";
 $app = new Resourceful\Resourceful();
 $app["debug"] = true;
 
-$app->register(new Silex\Provider\TwigServiceProvider\TwigServiceProvider());
+$app->register(new Silex\Provider\TwigServiceProvider());
 $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
     "resourceful.schemaStore" => new Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
 ));
