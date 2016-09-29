@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- git fetch upstream and  git merge upstream/master @ f5fee9a2226771b898ead2c4d31e7156796cf16f
 
 ## [1.0.2] 2016-09-28
 

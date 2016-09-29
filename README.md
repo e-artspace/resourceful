@@ -22,14 +22,15 @@ Define your front controller.
 ```php
 <?php
 
-require __DIR__ . "/../vendor/autoload.php";
+require __DIR__ . "/vendor/autoload.php";
 
 $app = new Resourceful\Resourceful();
 $app["debug"] = true;
 
+
+$app->register(new Silex\Provider\TwigServiceProvider\TwigServiceProvider());
 $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
     "resourceful.schemaStore" => new Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
-));
 
 $app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
 
@@ -37,6 +38,7 @@ $app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
 $app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
 $app->flush();
 $app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
+
 
 // Start Registering Controllers
 
