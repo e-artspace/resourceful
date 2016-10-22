@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- enforced id univocity on create
+
+
 ## [1.1.0] 2016-22-10
 
 ### Changed

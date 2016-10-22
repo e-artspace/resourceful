@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class CreateResourceController
@@ -28,9 +29,15 @@ class CreateResourceController
 		if(!isset($data->id)) {
 			$data->id = $app["uniqid"];
 		}
+		
         $this->validate($app, $data);
 
         $location = $app["url_generator"]->generate($this->schema, array("id" => $data->id));
+		
+		if ($this->service->contains($location)){
+			throw new ConflictHttpException("Sorry $location already exists.");
+		}
+		
         if ($this->service->save($location, $data) === false) {
             throw new ServiceUnavailableHttpException(null, "Failed to save resource");
         }
