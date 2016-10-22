@@ -6,4 +6,8 @@ before_script:
 script: vendor/bin/phpunit
 
 php:
+<<<<<<< HEAD
+=======
+  - 5.6
+>>>>>>> upstream/master
   - 7.0

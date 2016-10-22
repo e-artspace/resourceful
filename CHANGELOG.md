@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - all private variables changed to protetected to allow class reuse
+- git fetch upstream and  git merge upstream/master @ 1a8e69271c4a2771dbdc88b6d4437a46ef8f1113
 
 
 ## [1.0.3] 2016-09-29
