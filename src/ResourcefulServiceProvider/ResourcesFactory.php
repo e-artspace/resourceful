@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResourcesFactory
 {
-    private $app;
+    protected $app;
 
     public function __construct(Container $app)
     {

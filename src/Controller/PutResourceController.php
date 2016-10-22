@@ -12,8 +12,8 @@ use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class PutResourceController
 {
-    private $service;
-    private $schema;
+    protected $service;
+    protected $schema;
 
     public function __construct(Cache $service, $schema)
     {

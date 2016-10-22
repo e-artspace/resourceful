@@ -14,8 +14,8 @@ use Twig_Loader_Filesystem;
 
 class CrudControllerProvider implements ControllerProviderInterface
 {
-    private $type;
-    private $service;
+    protected $type;
+    protected $service;
 
     public function __construct($type, Cache $service)
     {

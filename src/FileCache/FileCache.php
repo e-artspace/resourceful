@@ -8,8 +8,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class FileCache implements Cache
 {
-    private $filesystem;
-    private $location;
+    protected $filesystem;
+    protected $location;
 
     public function __construct($location)
     {

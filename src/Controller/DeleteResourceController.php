@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class DeleteResourceController
 {
-    private $service;
+    protected $service;
 
     public function __construct(Cache $service)
     {

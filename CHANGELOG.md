@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] 2016-22-10
+
+### Changed
+
+- all private variables changed to protetected to allow class reuse
+
+
 ## [1.0.3] 2016-09-29
 
 ### Changed
@@ -43,7 +50,8 @@ First release. From original project:
 - README improvements
 
 
-[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.0.3...HEAD
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/e-artspace/resourceful/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/e-artspace/resourceful/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/e-artspace/resourceful/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/e-artspace/resourceful/compare/1.0.0...1.0.1

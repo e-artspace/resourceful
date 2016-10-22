@@ -12,7 +12,7 @@ use Twig_Loader_Filesystem;
 
 class IndexControllerProvider implements ControllerProviderInterface
 {
-    private $service;
+    protected $service;
 
     public function __construct(Cache $service)
     {

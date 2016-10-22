@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class JsonErrorHandler
 {
-    private $app;
+    protected $app;
 
     public function __construct($app)
     {

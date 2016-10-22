@@ -10,8 +10,8 @@ use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class GetResourceController
 {
-    private $service;
-    private $contentType;
+    protected $service;
+    protected $contentType;
 
     public function __construct(Cache $service, $contentType = "application/json")
     {

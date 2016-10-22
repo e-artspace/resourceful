@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AddSchema
 {
-    private $schema;
-    private $template;
-    private $replacements;
+    protected $schema;
+    protected $template;
+    protected $replacements;
 
     public function __construct($schema, $template, $replacements = array())
     {
