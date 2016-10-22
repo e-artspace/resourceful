@@ -13,7 +13,7 @@ $script = <<-SCRIPT
 	cd /vagrant; composer install
 	
 	# install apache
-	apt-get -y install apache2 libapache2-mod-php7.0 redis-server
+	apt-get -y install apache2 libapache2-mod-php7.0
 	cat <<EOF > /etc/apache2/sites-available/000-default.conf
 <VirtualHost *:80>
     DocumentRoot /vagrant/example/web
