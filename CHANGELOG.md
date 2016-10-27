@@ -6,12 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [2.0.0] 2016-22-10
 
-
 ### Changed
 
 - enforced id univocity on create
 - removed not needed constructors and constructor paramethers
-- strong code & tests refactory for a better silex conformance
+- code & tests refactory for a better silex conformance and to improve extensibility
 
 ### Added
 
@@ -65,7 +64,8 @@ First release. From original project:
 - README improvements
 
 
-[Unreleased]: https://github.com/e-artspace/resourceful/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/e-artspace/resourceful/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/e-artspace/resourceful/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/e-artspace/resourceful/compare/1.0.2...1.0.3
 [1.0.2]: https://github.com/e-artspace/resourceful/compare/1.0.1...1.0.2
