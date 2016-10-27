@@ -55,10 +55,10 @@ if you want you can define a different storage service foreach data type. E.g.:
 
 ```php
 $app['datastore'] = function($app) {
-	return new \Doctrine\Common\Cache\FileCache('/data/dir1');
+	return new \Resourceful\FileCache\FileCache('/data/dir1');
 };
 $app['schemastore'] = function($app) {
-	return new \Doctrine\Common\Cache\FileCache('/data/dir2');
+	return new \Resourceful\FileCache\FileCache('/data/dir2');
 };
 $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
     "resourceful.store" => 'datastore',
@@ -77,11 +77,15 @@ links to this default index schema as you add resources.  These links wil give y
 
 Adding a new resource to your application, requires only one line of code in your front controller.
 ```php
-$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("foo", $app["data"]));
+$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("/schema/foo");
 ```
 
-This adds the "foo" resource using the CrudControllerProvider.  The first argument is the name of the type.  The second
-argument is any Doctrine Cache implementation.  Storing files on the filesystem is usually good enough for a rapid
+This adds the "foo" resource using the CrudControllerProvider.  The first argument is the uri of the json schema that
+defines the structure of "foo" items. 
+The persistance is managed by the service pointed by $app['resourceful.store.foo'] (foo is the schema id) or, as fallbak,
+by the service ponited by $app['resourceful.store']. Any Doctrine Cache implementation should works.
+
+Storing files on the filesystem is usually good enough for a rapid
 prototype, but you can choose something like memcache or redis if you prefer.  A centralized
 data storage can be useful if you are collaborating with others on this prototype.
 
