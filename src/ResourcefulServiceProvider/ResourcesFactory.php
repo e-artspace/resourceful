@@ -2,7 +2,6 @@
 
 namespace Resourceful\ResourcefulServiceProvider;
 
-use Pimple\Container;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +10,7 @@ class ResourcesFactory
 {
     protected $app;
 
-    public function __construct(Container $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

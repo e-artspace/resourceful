@@ -6,88 +6,71 @@ use Resourceful\Controller\GetResourceController;
 use PHPUnit_Framework_TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
 
 class GetResourceControllerTest extends PHPUnit_Framework_TestCase
 {
-    private $app;
-    private $service;
-    private $client;
-
-    public function setUp()
+	private $app;
+	private $request;
+	
+    protected function setup()
     {
-        $this->app = new Application();
-        $this->app["debug"] = true;
-
-        $this->service = $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock();
-        $this->app->get("/foo/{id}", new GetResourceController($this->service));
-
-        $this->client = new Client($this->app);
+        $this->app = new Application(array(
+        	'debug' => true,
+        	'cachemock' => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
+        	'resourceful.store' => 'cachemock'
+		));
+		$this->request= Request::create('/foo/4ee8e29d45851','GET');
     }
 
     public function testGet()
     {
+    	
+        $this->app['cachemock']->method("contains")
+            ->with("/foo/4ee8e29d45851")
+            ->willReturn(true);		
         $foo = new \stdClass();
         $foo->id = "4ee8e29d45851";
-
-        $this->service->method("contains")
-            ->with("/foo/4ee8e29d45851")
-            ->willReturn(true);
-
-        $this->service->method("fetch")
+        $this->app['cachemock']->method("fetch")
             ->with("/foo/4ee8e29d45851")
             ->willReturn($foo);
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("GET", "/foo/4ee8e29d45851", array(), array(), $headers);
-        $response = $this->client->getResponse();
+		
+		$getResourceController = new GetResourceController("/schema/foo");
+		$response = $getResourceController($this->app,$this->request, '4ee8e29d45851');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertEquals("application/json", $response->headers->get("Content-Type"));
         $this->assertJsonStringEqualsJsonString('{"id":"4ee8e29d45851"}', $response->getContent());
     }
 
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */	
     public function testGetNotFound()
     {
-        $this->service->method("contains")
+        $this->app['cachemock']->method("contains")
             ->with("/foo/4ee8e29d45851")
             ->willReturn(false);
 
-        $this->app->error(function (\Exception $e, $code) {
-            $this->assertEquals("Not Found", $e->getMessage());
-        });
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("GET", "/foo/4ee8e29d45851", array(), array(), $headers);
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+		$getResourceController = new GetResourceController("/schema/foo");
+		$response = $getResourceController($this->app,$this->request, '4ee8e29d45851');
     }
-
+	
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException
+     */	
     public function testGetError()
     {
-        $this->service->method("contains")
+        $this->app['cachemock']->method("contains")
             ->with("/foo/4ee8e29d45851")
             ->willReturn(true);
 
-        $this->service->method("fetch")
+        $this->app['cachemock']->method("fetch")
             ->with("/foo/4ee8e29d45851")
             ->willReturn(false);
 
-        $this->app->error(function (\Exception $e, $code) {
-            $this->assertEquals("Failed to retrieve resource", $e->getMessage());
-        });
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("GET", "/foo/4ee8e29d45851", array(), array(), $headers);
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
+		$getResourceController = new GetResourceController("/schema/foo");
+		$response = $getResourceController($this->app,$this->request, '4ee8e29d45851');
     }
 }

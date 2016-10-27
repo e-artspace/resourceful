@@ -11,15 +11,11 @@
                     "href": "/foo/{$}"
                 }
             ]
-        },
-        "description": {
-            "type": "string"
         }
     },
     "required": [
         "id"
     ],
-    "additionalProperties": false,
     "links": [
         {
             "rel": "delete",

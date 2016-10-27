@@ -2,37 +2,26 @@
 
 namespace Resourceful\Controller;
 
-use Doctrine\Common\Cache\Cache;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
-class GetResourceController
+class GetResourceController extends AbstractResourceController
 {
-    protected $service;
-    protected $contentType;
-
-    public function __construct(Cache $service, $contentType = "application/json")
+    public function __invoke(Application $app, Request $request)
     {
-        $this->service = $service;
-        $this->contentType = $contentType;
-    }
-
-    public function __invoke(Request $request)
-    {
-        if (!$this->service->contains($request->getRequestUri())) {
+		$store = $this->getStore($app);
+		
+        if (!$store->contains($request->getRequestUri())) {
             throw new NotFoundHttpException("Not Found");
         }
 
-        $resource = $this->service->fetch($request->getRequestUri());
+        $resource = $store->fetch($request->getRequestUri());
         if ($resource === false) {
             throw new ServiceUnavailableHttpException(null, "Failed to retrieve resource");
         }
-
-        $response = JsonResponse::create($resource);
-        $response->headers->set("Content-Type", $this->contentType);
-
-        return $response;
+		
+        return $app->json($resource);
     }
 }

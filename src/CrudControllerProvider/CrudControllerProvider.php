@@ -14,28 +14,29 @@ use Twig_Loader_Filesystem;
 
 class CrudControllerProvider implements ControllerProviderInterface
 {
-    protected $type;
-    protected $service;
+    protected $schema;
 
-    public function __construct($type, Cache $service)
+    public function __construct($schema)
     {
-        $this->type = strtolower($type);
-        $this->service = $service;
+        $this->schema = $schema;
     }
 
     public function connect(Application $app)
     {
-        $schema = $app["url_generator"]->generate("schema", array("type" => $this->type));
-        $resource = $app["resources_factory"]($schema);
+		assert(isset($app["resources_factory"]));
+		assert(isset($app["twig.loader"]));
+		
+        $resource = $app["resources_factory"]($this->schema);
+		$type = basename($this->schema);
 
         $app["twig.loader"]->addLoader(new Twig_Loader_Filesystem(__DIR__ . "/templates"));
-        $replacements = array("type" => $this->type, "title" => ucfirst($this->type));
-        $app->before(new AddSchema($schema, "crud", $replacements));
+        $replacements = array("type" => $type, "title" => ucfirst($type));
+        $app->before(new AddSchema($this->schema, "crud", $replacements));
 
-        $resource->get("/{id}", new GetResourceController($this->service))->bind($schema);
-        $resource->put("/{id}", new PutResourceController($this->service, $schema));
-        $resource->delete("/{id}", new DeleteResourceController($this->service));
-        $resource->post("/", new CreateResourceController($this->service, $schema));
+        $resource->get("/{id}", new GetResourceController($this->schema))->bind($this->schema);
+        $resource->put("/{id}", new PutResourceController($this->schema));
+        $resource->delete("/{id}", new DeleteResourceController($this->schema));
+        $resource->post("/", new CreateResourceController($this->schema));
 
         return $resource;
     }

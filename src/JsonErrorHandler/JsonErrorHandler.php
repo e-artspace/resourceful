@@ -3,12 +3,13 @@
 namespace Resourceful\JsonErrorHandler;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Silex\Application;
 
 class JsonErrorHandler
 {
     protected $app;
 
-    public function __construct($app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

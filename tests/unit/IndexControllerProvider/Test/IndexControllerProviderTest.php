@@ -3,59 +3,31 @@
 namespace Resourceful\IndexControllerProvider\Test;
 
 use Resourceful\IndexControllerProvider\IndexControllerProvider;
-use Resourceful\Resourceful;
+use Silex\Application;
 use Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider;
-use Resourceful\SchemaControllerProvider\SchemaControllerProvider;
 use PHPUnit_Framework_TestCase;
 use Silex\Provider\TwigServiceProvider;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Client;
 
 class IndexControllerProviderTest extends PHPUnit_Framework_TestCase
 {
-    private $app;
-    private $client;
-    private $service;
 
-    public function setUp()
+    public function testConnect()
     {
-        $this->app = new Resourceful();
-        $this->app["debug"] = true;
-
-        $this->app->register(new TwigServiceProvider());
-        $this->app->register(new ResourcefulServiceProvider(), array(
-            "resourceful.schemaStore" => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
-        ));
-
-        $this->app->mount("/schema", new SchemaControllerProvider());
-        $this->app->flush();
-
-        $this->service = $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock();
-        $this->app->mount("/", new IndexControllerProvider($this->service));
-
-        $this->client = new Client($this->app);
-    }
-
-    public function testGet()
-    {
-        $index = '{"title":"My API", "description":"This is my fantastic API"}';
-
-        $this->service->method("contains")
-            ->with("/")
-            ->willReturn(true);
-
-        $this->service->method("fetch")
-            ->with("/")
-            ->willReturn(json_decode($index));
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("GET", "/", array(), array(), $headers);
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertEquals("application/json; profile=\"/schema/index\"", $response->headers->get("Content-Type"));
-        $this->assertJsonStringEqualsJsonString($index, $response->getContent());
+        $app = new Application(array(
+        	'cachemock' => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
+        	'resourceful.store' => 'cachemock'
+		));
+        $app->register(new TwigServiceProvider());
+        $app->register(new ResourcefulServiceProvider());		
+		$indexControllerProvider = new IndexControllerProvider("/schema/index");
+		
+		$route = $indexControllerProvider
+			->connect($app)
+			->flush()
+			->getIterator()
+			->current()
+		;
+		$this->assertEquals('/', $route->getPath());
+		$this->assertEquals((array)'GET', $route->getMethods());
     }
 }

@@ -4,3 +4,6 @@ vendor
 .project
 .project/
 .vagrant/
+tests/_support/report/*
+example/data/*
+!example/data/foo/bar.json

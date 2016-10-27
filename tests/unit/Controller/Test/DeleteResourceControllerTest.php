@@ -6,52 +6,44 @@ use Resourceful\Controller\DeleteResourceController;
 use PHPUnit_Framework_TestCase;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class DeleteResourceControllerTest extends PHPUnit_Framework_TestCase
 {
-    private $app;
-    private $service;
-    private $client;
 
-    public function setUp()
+    private function appFactory()
     {
-        $this->app = new Application();
-        $this->app["debug"] = true;
-
-        $this->service = $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock();
-        $this->app->delete("/foo/{id}", new DeleteResourceController($this->service));
-
-        $this->client = new Client($this->app);
+        $app = new Application(array(
+        	'debug' => true,
+        	'cachemock' => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
+        	'resourceful.store' => 'cachemock'
+		));
+		return $app;
     }
 
     public function testDelete()
     {
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("DELETE", "/foo/4ee8e29d45851", array(), array(), $headers);
-        $response = $this->client->getResponse();
+    	$deleteResourceController = new DeleteResourceController("/schema/foo");
+	    $app = $this->appFactory();
+		$request = Request::create('/foo/4ee8e29d45851','DELETE');
+	
+        $response = $deleteResourceController($app,$request);
 
         $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertEquals("", $response->getContent());
     }
 
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException
+     */	
     public function testDeleteError()
     {
-        $this->service->method("delete")
-            ->willReturn(false);
-
-        $this->app->error(function (\Exception $e, $code) {
-            $this->assertEquals("Failed to delete resource", $e->getMessage());
-        });
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-        );
-        $this->client->request("DELETE", "/foo/4ee8e29d45851", array(), array(), $headers);
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
+    	$deleteResourceController = new DeleteResourceController("/schema/foo");
+	    $app = $this->appFactory();
+		$request = Request::create('/foo/4ee8e29d45851','DELETE');
+        $app['cachemock']->method("delete")->willReturn(false);
+		
+		$response = $deleteResourceController($app,$request);
     }
 }

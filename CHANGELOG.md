@@ -4,10 +4,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.0] 2016-22-10
+
+
 ### Changed
 
 - enforced id univocity on create
+- removed not needed constructors and constructor paramethers
+- strong code & tests refactory for a better silex conformance
 
+### Added
+
+- smoke tests with postman
+- assertion in code
 
 ## [1.1.0] 2016-22-10
 

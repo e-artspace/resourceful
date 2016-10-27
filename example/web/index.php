@@ -2,26 +2,21 @@
 
 require __DIR__ . "/../../vendor/autoload.php";
 
-$app = new Resourceful\Resourceful();
-$app["debug"] = true;
+$app = new Resourceful\Resourceful(array('debug'=>true));
+
+// create a storage service
+$app['datastore'] = function($app) {
+	return new \Resourceful\FileCache\FileCache(__DIR__ . '/../data');
+};
 
 $app->register(new Silex\Provider\TwigServiceProvider());
 $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
-    "resourceful.schemaStore" => new Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
+    "resourceful.store" => 'datastore'
 ));
 
-$app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
-
-// Supporting Controllers
-
 $app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
-$app->flush();
-$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
-
-// Start Registering CRUD Controllers
-$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("foo", $app["data"]));
-
-// End Registering Controllers
+$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider('/schema/index'));
+$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider('/schema/foo'));
 
 // Initialize CORS support
 $app->after($app["cors"]);

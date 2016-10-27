@@ -22,26 +22,23 @@ Define your front controller.
 ```php
 <?php
 
-require __DIR__ . "/vendor/autoload.php";
+require __DIR__ . "/../../vendor/autoload.php";
 
-$app = new Resourceful\Resourceful();
-$app["debug"] = true;
+$app = new Resourceful\Resourceful(array('debug'=>true));
+
+// create a storage service
+$app['datastore'] = function($app) {
+	return new \Resourceful\FileCache\FileCache(__DIR__ . '/../data');
+};
 
 $app->register(new Silex\Provider\TwigServiceProvider());
 $app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
-    "resourceful.schemaStore" => new Resourceful\FileCache\FileCache(__DIR__ . "/../data"),
+    "resourceful.store" => 'datastore'
+));
 
-$app["data"] = new Resourceful\FileCache\FileCache(__DIR__ . "/../data");
-
-// Supporting Controllers
 $app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
-$app->flush();
-$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider($app["data"]));
-
-
-// Start Registering Controllers
-
-// End Registering Controllers
+$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider('/schema/index'));
+$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider('/schema/foo'));
 
 // Initialize CORS support
 $app->after($app["cors"]);
@@ -54,6 +51,24 @@ That's it.  You are ready to get started.  Run the application using the built-i
 > php -S localhost:8080 front.php
 ```
 
+if you want you can define a different storage service foreach data type. E.g.:
+
+```php
+$app['datastore'] = function($app) {
+	return new \Doctrine\Common\Cache\FileCache('/data/dir1');
+};
+$app['schemastore'] = function($app) {
+	return new \Doctrine\Common\Cache\FileCache('/data/dir2');
+};
+$app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
+    "resourceful.store" => 'datastore',
+	"resourceful.store.index" => 'datastore',
+	"resourceful.store.foo" => 'datastore',
+    "resourceful.store.schema" => 'schemastore',
+));
+```
+
+N.B: at least "resourceful.store" must be defined.
 
 You can use the json browser implementation at
 http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8080/.  On the first run, a folder
@@ -99,11 +114,22 @@ cd resourceful
 The following commands can be used to start a virtual appliance and execute all tests:
 
 ```shell
-vagrant up
+PORT=8080 vagrant up
 vagrant ssh
 cd /vagrant
 vendor/bin/phpunit
 ```
+
+To get a test coverage report:
+
+```bash
+sudo apt-get install -y php-xdebug
+vendor/bin/phpunit --coverage-html=tests/_support/report/unit
+```
+
+An apache web server is configured to localhost port 8080 (or the one you specified in vagrant up)
+
+The directory tests/smoke contains the code tu run a smoke test in Postman [![Try it in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/9778fd146d5d15460e20)
 
 **Note that the source directory is mounted in /vagrant dir on the virtual host.**
 

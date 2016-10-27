@@ -4,96 +4,126 @@ namespace Resourceful\Controller\Test;
 
 use Resourceful\Controller\CreateResourceController;
 use Resourceful\FileCache\FileCache;
-use JDesrosiers\Silex\Provider\JsonSchemaServiceProvider;
 use PHPUnit_Framework_TestCase;
 use Silex\Application;
-use Silex\Provider\RoutingServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Client;
+use Symfony\Component\HttpFoundation\Request;
+use Silex\Provider\RoutingServiceProvider;
+use JDesrosiers\Silex\Provider\JsonSchemaServiceProvider;
+
 
 class CreateResourceControllerTest extends PHPUnit_Framework_TestCase
 {
-    private $app;
-    private $service;
-    private $client;
 
-    public function setUp()
+    private function appFactory()
     {
-        $this->app = new Application();
-        $this->app["debug"] = true;
-
-        $this->app->register(new RoutingServiceProvider());
-        $this->app->register(new JsonSchemaServiceProvider());
-        $this->app["uniqid"] = function () {
-            return uniqid();
-        };
-
-        $this->app["schemaService"] = new FileCache(__DIR__);
-
-        $this->service = $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock();
-        $this->app->get("/foo/{id}")->bind("/schema/foo");
-        $this->app->post("/foo/", new CreateResourceController($this->service, "/schema/foo"));
-        $this->app["json-schema.schema-store"]->add("/schema/foo", $this->app["schemaService"]->fetch("/schema/foo"));
-
-        $this->client = new Client($this->app);
+        $app = new Application(array(
+        	'debug' => true,
+        	'cachemock' => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
+        	'resourceful.store' => 'cachemock'
+		));
+		$app->register(new RoutingServiceProvider());
+		$app->register(new JsonSchemaServiceProvider());
+        $app->get("/foo/{id}")->bind("/schema/foo");
+		$app->flush();
+        $app["json-schema.schema-store"]->add("/schema/foo", file_get_contents(__DIR__. '/schema/foo.json'));
+		
+		return $app;
     }
-
-    public function testCreate()
+	
+	private function requestFactory( $content)
     {
+		return  Request::create(
+			'/foo/',						// string $uri, 
+			'POST',							// string $method = 'GET', 
+			array(),						// array $parameters = array(), 
+			array(),						// array $cookies = array(), 
+			array(),						// array $files = array(), 
+			array(
+	            "HTTP_ACCEPT" => "application/json",
+	            "CONTENT_TYPE" => "application/json"
+			),								// array $server = array(), 
+			json_encode($content)			// string $content = null
+		);
+    }
+	
+
+    public function testCreateResourceWithAssignedId()
+    {
+    	$createResourceController = new CreateResourceController("/schema/foo");
         $foo = new \stdClass();
         $foo->id = "4ee8e29d45851";
-
-        $this->app["uniqid"] = $foo->id;
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-            "CONTENT_TYPE" => "application/json"
-        );
-        $this->client->request("POST", "/foo/", array(), array(), $headers, "{}");
-        $response = $this->client->getResponse();
+	    $app = $this->appFactory();
+		$request = $this->requestFactory($foo);
+	
+        $response = $createResourceController($app,$request);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEquals("application/json", $response->headers->get("Content-Type"));
         $this->assertEquals("/foo/$foo->id", $response->headers->get("Location"));
         $this->assertJsonStringEqualsJsonString("{\"id\":\"$foo->id\"}", $response->getContent());
     }
-
-    public function testBadRequest()
+	
+	
+    public function testCreateResourceWithGeneratedId()
     {
-        $this->app->error(function (\Exception $e, $code) {
-            $errorMessage = '[{"code":303,"dataPath":"\/illegalField","schemaPath":"\/additionalProperties","message":"Additional properties not allowed"}]';
-            $this->assertEquals($errorMessage, $e->getMessage());
-        });
+    	$createResourceController = new CreateResourceController("/schema/foo");
+        $foo = new \stdClass();
+	    $app = $this->appFactory();
+		$app['uniqid'] = 'abc';
+		$request = $this->requestFactory($foo);
+	
+        $response = $createResourceController($app,$request);
 
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-            "CONTENT_TYPE" => "application/json"
-        );
-        $this->client->request("POST", "/foo/", array(), array(), $headers, '{"illegalField":"illegal"}');
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEquals("application/json", $response->headers->get("Content-Type"));
+        $this->assertEquals("/foo/abc", $response->headers->get("Location"));
+        $this->assertJsonStringEqualsJsonString("{\"id\":\"abc\"}", $response->getContent());
     }
 
-    public function testSaveError()
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\ConflictHttpException
+     */	
+    public function testIdExists()
     {
+    	$createResourceController = new CreateResourceController("/schema/foo");
         $foo = new \stdClass();
         $foo->id = "4ee8e29d45851";
+	    $app = $this->appFactory();
+        $app['cachemock']->method("contains")
+            ->willReturn(true);
+		$request = $this->requestFactory($foo);
+		
+		$response = $createResourceController($app,$request);
+    }
 
-        $this->service->method("save")
-            ->willReturn(false);
+    /**
+     * @expectedException Symfony\Component\Routing\Exception\InvalidParameterException
+     */	
+    public function testBadRequest()
+    {
+    	$createResourceController = new CreateResourceController("/schema/foo");
+        $foo = new \stdClass();
+		$foo->id = ''; //should thtows exception
+	    $app = $this->appFactory();
+		$request = $this->requestFactory($foo);
+	
+        $response = $createResourceController($app,$request);
+    }
 
-        $this->app->error(function (\Exception $e, $code) {
-            $this->assertEquals("Failed to save resource", $e->getMessage());
-        });
-
-        $headers = array(
-            "HTTP_ACCEPT" => "application/json",
-            "CONTENT_TYPE" => "application/json"
-        );
-        $this->client->request("POST", "/foo/", array(), array(), $headers, "{}");
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException
+     */	
+    public function testSaveError()
+    {
+    	$createResourceController = new CreateResourceController("/schema/foo");
+        $foo = new \stdClass();
+        $foo->id = "4ee8e29d45851";
+	    $app = $this->appFactory();
+        $app['cachemock']->method("save")->willReturn(false);
+		$request = $this->requestFactory($foo);
+	
+        $response = $createResourceController($app,$request);
     }
 }
