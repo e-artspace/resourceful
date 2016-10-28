@@ -11,6 +11,7 @@ use Resourceful\ResourcefulServiceProvider\AddSchema;
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 use Twig_Loader_Filesystem;
+use \Resourceful\StoreHelpers\StoreHelpers;
 
 class CrudControllerProvider implements ControllerProviderInterface
 {
@@ -18,6 +19,8 @@ class CrudControllerProvider implements ControllerProviderInterface
 
     public function __construct($schema)
     {
+    	assert( !empty(StoreHelpers::getSchemaType($schema)));
+		
         $this->schema = $schema;
     }
 
@@ -27,16 +30,21 @@ class CrudControllerProvider implements ControllerProviderInterface
 		assert(isset($app["twig.loader"]));
 		
         $resource = $app["resources_factory"]($this->schema);
-		$type = basename($this->schema);
-
+		
+		$type = StoreHelpers::getSchemaType($this->schema);
         $app["twig.loader"]->addLoader(new Twig_Loader_Filesystem(__DIR__ . "/templates"));
         $replacements = array("type" => $type, "title" => ucfirst($type));
-        $app->before(new AddSchema($this->schema, "crud", $replacements));
+		$addCrudSchema = new AddSchema($this->schema, "crud", $replacements);
 
-        $resource->get("/{id}", new GetResourceController($this->schema))->bind($this->schema);
-        $resource->put("/{id}", new PutResourceController($this->schema));
-        $resource->delete("/{id}", new DeleteResourceController($this->schema));
-        $resource->post("/", new CreateResourceController($this->schema));
+        $resource->get("/{id}", new GetResourceController($this->schema))
+			->before($addCrudSchema)
+        	->bind($this->schema);
+        $resource->put("/{id}", new PutResourceController($this->schema))
+			->before($addCrudSchema);
+        $resource->delete("/{id}", new DeleteResourceController($this->schema))
+			->before($addCrudSchema);
+        $resource->post("/", new CreateResourceController($this->schema))
+			->before($addCrudSchema);
 
         return $resource;
     }

@@ -4,12 +4,12 @@ namespace Resourceful\StoreHelpers\Test;
 
 use PHPUnit_Framework_TestCase;
 use Pimple\Container;
+use \Resourceful\StoreHelpers\StoreHelpers;
 
-class StoreHelperTest extends PHPUnit_Framework_TestCase
+class StoreHelpersTest extends PHPUnit_Framework_TestCase
 {
-	use \Resourceful\StoreHelpers\StoreHelpers;
-	
-	public function testGetStoreForType()
+
+	public function testGetStoreForSchema()
     {
         $app = new Container(array(
         	'cachemock1' => $this->getMockBuilder("Doctrine\Common\Cache\Cache")->getMock(),
@@ -20,11 +20,26 @@ class StoreHelperTest extends PHPUnit_Framework_TestCase
         	'resourceful.store.index' => 'cachemock3',
         	
 		));
+		
 
-		$this->assertEquals($app['cachemock1'], $this->getStoreForType(null, $app));
-		$this->assertEquals($app['cachemock1'], $this->getStoreForType('', $app));
-		$this->assertEquals($app['cachemock1'], $this->getStoreForType('any', $app));
-		$this->assertEquals($app['cachemock2'], $this->getStoreForType('schema', $app));
-		$this->assertEquals($app['cachemock3'], $this->getStoreForType('index', $app));
+		$this->assertEquals($app['cachemock1'], StoreHelpers::getStoreForSchema(null, $app));
+		$this->assertEquals($app['cachemock1'], StoreHelpers::getStoreForSchema('/any', $app));
+		$this->assertEquals($app['cachemock1'], StoreHelpers::getStoreForSchema('/schema/any', $app));
+		$this->assertEquals($app['cachemock2'], StoreHelpers::getStoreForSchema('/schema', $app));
+		$this->assertEquals($app['cachemock2'], StoreHelpers::getStoreForSchema('schema', $app));
+		$this->assertEquals($app['cachemock3'], StoreHelpers::getStoreForSchema('/index', $app));
+    }
+
+	public function testGetSchemaType()
+    {
+		$this->assertEquals(null, StoreHelpers::getSchemaType(null));
+		$this->assertEquals(null, StoreHelpers::getSchemaType(''));
+		$this->assertEquals(null, StoreHelpers::getSchemaType('   '));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType('abc'));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType('/abc'));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType('/def/abc'));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType('http://example.com/abc'));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType('file:////def/abc'));
+		$this->assertEquals('abc', StoreHelpers::getSchemaType(':///abc'));
     }
 }

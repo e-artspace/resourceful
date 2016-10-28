@@ -1,5 +1,4 @@
 <?php
-
 require __DIR__ . "/../../vendor/autoload.php";
 
 $app = new Resourceful\Resourceful(array('debug'=>true));

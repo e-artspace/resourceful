@@ -5,14 +5,13 @@ namespace Resourceful\ResourcefulServiceProvider;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Cache\Cache;
+use \Resourceful\StoreHelpers\StoreHelpers;
 
 class AddSchema
 {
     protected $schema;
     protected $template;
     protected $replacements;
-
-    use \Resourceful\StoreHelpers\StoreHelpers;
 
     public function __construct($schema, $template, $replacements = array())
     {
@@ -23,7 +22,7 @@ class AddSchema
 
     public function __invoke(Request $request, Application $app)
     {
-		$store = $this->getStoreForType('schema', $app);
+		$store = StoreHelpers::getStoreForSchema('schema', $app);
 			
         if ($app["debug"] && !$store->contains($this->schema)) {
             $store->save(

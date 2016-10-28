@@ -4,7 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [2.0.0] 2016-22-10
+## [2.1.0] 2016-29-10
+
+### Changed
+
+- schema added at route policy middleware in crudControllerProvider
+- StoreHelpers from traits to a standalone class
+
+
+## [2.0.0] 2016-28-10
 
 ### Changed
 
@@ -64,7 +72,8 @@ First release. From original project:
 - README improvements
 
 
-[Unreleased]: https://github.com/e-artspace/resourceful/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/e-artspace/resourceful/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/e-artspace/resourceful/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/e-artspace/resourceful/compare/1.0.3...1.1.0
 [1.0.3]: https://github.com/e-artspace/resourceful/compare/1.0.2...1.0.3
