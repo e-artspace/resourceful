@@ -9,7 +9,6 @@ class CRUDControllerProvider implements ControllerProviderInterface
 {	
 	private $schemaId;
 
-
 	public function getSchemaId()
 	{
 		return $this->schemaId;
