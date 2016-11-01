@@ -1,7 +1,8 @@
 <?php
 require __DIR__ . "/../../vendor/autoload.php"; 
 
-$app = new \Silex\Application(array('debug'=>true));
+$app = new \Silex\Application;
+
 $app->register(new Resourceful\ServiceProvider,array(
 	'data.dir' => __DIR__ . '/../data'
 ));

@@ -2,19 +2,19 @@
 
 namespace Resourceful\Test;
 
-use Resourceful\CrudControllerProvider;
+use Resourceful\CRUDControllerProvider;
 use Silex\Application;
 use Resourceful\ServiceProvider;
 use PHPUnit_Framework_TestCase;
 
-class CrudControllerProviderTest extends PHPUnit_Framework_TestCase
+class CRUDControllerProviderTest extends PHPUnit_Framework_TestCase
 {
 
     public function testConnect()
     {
         $app = new Application();
         $app->register(new ServiceProvider());		
-		$crudControllerProvider = new CrudControllerProvider("foo");
+		$crudControllerProvider = new CRUDControllerProvider("foo");
 		
 		$routes = $crudControllerProvider->connect($app)->flush();
 		

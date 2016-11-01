@@ -11,11 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class IndexControllerProvider implements ControllerProviderInterface
 {
 	/**
-	 * N.B. the same 'index' string is used to name different concepts:
-	 * 		- a route name
-	 * 		- a schema name
-	 * 		- the basename of resource usi
-	 * 		- a part of a controller name
+	 * N.B. the same 'index' string is used to name different concepts-
 	 */
     public function connect(Application $app)
     {	
@@ -30,7 +26,7 @@ class IndexControllerProvider implements ControllerProviderInterface
 			};
 		}
 		
-        $controllers->get("/", 'index.controller:read')->bind('index')
+        $controllers->get("/", 'index.controller:read')->bind('index') // here 'index is the route name
 			->before(function (Request $request, Application $app){
 				// Generate the default index resource on the fly       	
 				assert(isset($app['twig']));
@@ -39,14 +35,14 @@ class IndexControllerProvider implements ControllerProviderInterface
 				$datastore=$app['data.store'];
 				
 				if($app["createDefault"]){
-		            $resource = $app["url_generator"]->generate('index').'/index'; // first 'index' is the route name, '/index' is the a resource basename
+		            $resource = $app["url_generator"]->generate('index').'/index'; // first 'index' is the route name, the last is the the resource basename
 		            if (!$datastore->contains($resource)) {
 		                $datastore->save($resource, json_decode($app["twig"]->render("index.json.twig")));
 		            }
 				}
 	        })
-			->before(new SchemaHandler('index'))
-			->after( new DescribedBySchemaHandler('index'))
+			->before(new SchemaHandler('index')) // here 'index' is a schema id
+			->after( new DescribedBySchemaHandler('index')) // here 'index' is a schema id
         ;
 			
         return $controllers;

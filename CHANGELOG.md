@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 
+## [3.0.0] 2016-01-11
+
+### Changed
+
+- full code and tests refactory,. Implementation diverged from upstream manster
+
+
 ## [2.1.0] 2016-29-10
 
 ### Changed
@@ -73,7 +80,8 @@ First release. From original project:
 - README improvements
 
 
-[Unreleased]: https://github.com/e-artspace/resourceful/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/e-artspace/resourceful/compare/3.0.0...HEAD
+[3.0.0]: https://github.com/e-artspace/resourceful/compare/3.0.0...3.0.0
 [2.1.0]: https://github.com/e-artspace/resourceful/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/e-artspace/resourceful/compare/1.1.0...2.0.0
 [1.1.0]: https://github.com/e-artspace/resourceful/compare/1.0.3...1.1.0
