@@ -51,9 +51,9 @@ class CRUDResourceController extends ReadResourceController
 		if(!isset($data->id)) {
 			$uniqudFunction = isset($app["$schemaId.uniqid"])?$app["$schemaId.uniqid"]:$app["uniqid"];
 			$data->id = $uniqudFunction($data);
-		} 	
+		}
         $this->validate($app, $data->id, $data);
-		
+
         $location = $app["url_generator"]->generate($schemaId, array("id" => $data->id));
 		if ($datastore->contains($location)){
 			throw new ConflictHttpException("Sorry $location already exists.");
