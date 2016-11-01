@@ -1,23 +1,15 @@
 <?php
-require __DIR__ . "/../../vendor/autoload.php";
+require __DIR__ . "/../../vendor/autoload.php"; 
 
-$app = new Resourceful\Resourceful(array('debug'=>true));
-
-// create a storage service
-$app['datastore'] = function($app) {
-	return new \Resourceful\FileCache\FileCache(__DIR__ . '/../data');
-};
-
-$app->register(new Silex\Provider\TwigServiceProvider());
-$app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
-    "resourceful.store" => 'datastore'
+$app = new \Silex\Application(array('debug'=>true));
+$app->register(new Resourceful\ServiceProvider,array(
+	'data.dir' => __DIR__ . '/../data'
 ));
 
-$app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
-$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider('/schema/index'));
-$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider('/schema/foo'));
+$app->mount("/", new Resourceful\IndexControllerProvider);
+$app->mount("/schema", new Resourceful\SchemaControllerProvider);
 
-// Initialize CORS support
-$app->after($app["cors"]);
+//here add your restful resources
+$app->mount("/foo", new Resourceful\CRUDControllerProvider('foo'));
 
 $app->run();

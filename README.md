@@ -4,7 +4,7 @@ Resourceful
 [![Code Coverage](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 
-This is a fork of [jdesrosiers/resourceful project](https://github.com/jdesrosiers/resourceful) project by Jason Desrosiers to fix some bug and improve testability.
+This package is inspired by the [jdesrosiers/resourceful project](https://github.com/jdesrosiers/resourceful) project by Jason Desrosiers.
 
 Resourceful is a simple framework designed for rapid prototyping REST/HTTP applications that are mostly CRUD operations.
 It is driven off of JSON Hyper-Schemas.  You use Hyper-Schemas to define your resources and their relationships with
@@ -20,27 +20,16 @@ Install Resourceful using composer
 
 Define your front controller.
 ```php
-<?php
-require __DIR__ . "/../../vendor/autoload.php";
-
-$app = new Resourceful\Resourceful(array('debug'=>true));
-
-// create a storage service
-$app['datastore'] = function($app) {
-	return new \Resourceful\FileCache\FileCache(__DIR__ . '/../data');
-};
-
-$app->register(new Silex\Provider\TwigServiceProvider());
-$app->register(new Resourceful\ResourcefulServiceProvider\ResourcefulServiceProvider(), array(
-    "resourceful.store" => 'datastore'
+$app = new Silex\Application;
+$app->register(new Resourceful\ServiceProvider,array(
+	'data.dir' => __DIR__ . '/../data'
 ));
 
-$app->mount("/schema", new Resourceful\SchemaControllerProvider\SchemaControllerProvider());
-$app->mount("/", new Resourceful\IndexControllerProvider\IndexControllerProvider('/schema/index'));
-$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider('/schema/foo'));
+$app->mount("/", new Resourceful\IndexControllerProvider);
+$app->mount("/schema", new Resourceful\SchemaControllerProvider);
 
-// Initialize CORS support
-$app->after($app["cors"]);
+//here add your restful resources
+$app->mount("/foo", new Resourceful\CRUDControllerProvider('foo'));
 
 $app->run();
 ```
@@ -50,31 +39,33 @@ That's it.  You are ready to get started.  Run the application using the built-i
 > php -S localhost:8080 front.php
 ```
 
-N.B: at least "resourceful.store" must be defined.
-
 You can use the json browser implementation at
 http://json-browser.s3-website-us-west-1.amazonaws.com/?url=http%3A//localhost%3A8080/.  On the first run, a folder
 called schema is created and a default index schema and resource is created.  You are expected to add
 links to this default index schema as you add resources.  These links wil give your users a place to start.
-The index schema name must be named "index".
 
-Adding a new resource to your application, requires only one line of code in your front controller.
+Adding another new resource to your application, requires only one line of code in your front controller.
 ```php
-$app->mount("/foo", new Resourceful\CrudControllerProvider\CrudControllerProvider("/schema/foo");
+$app->mount("/bar", new Resourceful\CrudControllerProvider("bar");
 ```
 
-This adds the "foo" resource using the CrudControllerProvider.  The first argument is the uri of the json schema that
-defines the structure of "foo" type items. 
-The persistance is managed by the store service pointed by $app['resourceful.store.*schema id*'] (e.g $app['resourceful.store.foo']) or, as fallbak,
-by the service referenced by $app['resourceful.store']. 
+The first argument ov CrudControllerProvider is the name of the json schema that defines the structure of  type items.
+It must be unique to the application.
 
-The store service can be any Doctrine Cache implementation. Storing files on the filesystem is usually good enough for a rapid
-prototype, but you can choose something like memcache or redis if you prefer.
+
+The persistance is managed by the store service in $app['*schema name*.store'] (e.g. $app['foo.store']) or, if not present,
+by the service in $app['data.store'] that is created by default as a local file system store. 
+
+The store service can be any Doctrine Cache implementation. The default implementation is usually good enough for a rapid
+prototype, but you can choose something like memcache or redis if you prefer. If you use the default store implementation,
+you can  set the data direcotory in $app['data.dir'] paramether ( defaut '/tmp/resourceful');
 
 Once the resource is registered, a good next step is to add a link in your index schema to create a "foo".  Refresh your
 Jsonary browser and you should see the link you added to the index.  Also, a default "foo" schema was generated in your
 `/schema` folder.  Fill out your "foo" schema how you like and then use the index link you added to create a "foo".
-All CRUD operations are available for the resource.
+All CRUD operations are available for the resource. You can customize operation redefining $app['*schema name*.controller'] (e.g $app['foo.controller'])
+
+You can disable the automatic creation of schema and sample date by setting $app['createDefault'] to false;
 
 Thats all. Just keep adding resources and links between those resources to make a useful API.
 

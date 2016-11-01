@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+    "title": "{{ schemaTitle }}",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "links": [
+                {
+                    "rel": "full",
+                    "href": "/{{ schemaId }}/{$}"
+                }
+            ]
+        }
+    },
+    "required": ["id"],
+    "links": [
+        {
+            "rel": "delete",
+            "method": "DELETE",
+            "href": "/{{ schemaId }}/{id}"
+        },
+        {
+            "rel": "put",
+            "method": "PUT",
+            "href": "/{{ schemaId }}/{id}"
+        }
+    ]
+}
