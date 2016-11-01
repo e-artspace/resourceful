@@ -45,7 +45,7 @@ class CRUDResourceController extends ReadResourceController
 		
 		$schemaId=$this->getSchemaId();
 		$datastore = $this->getDatastore($app);
-			
+
         $requestJson = $request->getContent()?:"{}";
         $data = json_decode($requestJson);
 		if(!isset($data->id)) {

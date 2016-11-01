@@ -6,7 +6,7 @@ use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
 
 class CRUDControllerProvider implements ControllerProviderInterface
-{	
+{
 	private $schemaId;
 
 	public function getSchemaId()
@@ -47,7 +47,7 @@ class CRUDControllerProvider implements ControllerProviderInterface
         	->bind($routeName)
 			->before($addCrudSchemaHandler)
 			->after($addSchemaProfileHandler)
-		;	
+		;
         $controllers->put("/{id}", "$routeName.controller:update")
 			->before($addCrudSchemaHandler)
 			->after($addSchemaProfileHandler)

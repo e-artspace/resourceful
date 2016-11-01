@@ -6,7 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
 class SchemaHandler
-{		
+{
     protected $schemaId;
     protected $template;
     protected $replacements;
