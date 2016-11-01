@@ -35,4 +35,16 @@ class SchemaControllerProviderTest extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals('/myschema/abc', $app["url_generator"]->generate('schema', array("id" => 'abc')));
     }
+
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     */	
+    public function testConnecWithTwoSchemaMount()
+    {
+        $app = new Application();
+        $app->register(new ServiceProvider());
+		$app->mount("/myschema", new SchemaControllerProvider);
+		$app->mount("/another", new SchemaControllerProvider);
+    }
 }

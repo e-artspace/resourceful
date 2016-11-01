@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- full code and tests refactory,. Implementation diverged from upstream manster
+- full code and tests refactory. Implementation diverged from upstream manster
 
 
 ## [2.1.0] 2016-29-10

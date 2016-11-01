@@ -46,12 +46,11 @@ links to this default index schema as you add resources.  These links wil give y
 
 Adding another new resource to your application, requires only one line of code in your front controller.
 ```php
-$app->mount("/bar", new Resourceful\CrudControllerProvider("bar");
+$app->mount("/bar", new Resourceful\CRUDControllerProvider("bar");
 ```
 
-The first argument ov CrudControllerProvider is the name of the json schema that defines the structure of  type items.
+The first argument ov CRUDControllerProvider is the name of the json schema that defines the structure of  type items.
 It must be unique to the application.
-
 
 The persistance is managed by the store service in $app['*schema name*.store'] (e.g. $app['foo.store']) or, if not present,
 by the service in $app['data.store'] that is created by default as a local file system store. 
@@ -66,6 +65,15 @@ Jsonary browser and you should see the link you added to the index.  Also, a def
 All CRUD operations are available for the resource. You can customize operation redefining $app['*schema name*.controller'] (e.g $app['foo.controller'])
 
 You can disable the automatic creation of schema and sample date by setting $app['createDefault'] to false;
+
+You can customize the function that creates unique id from items. Just redefine $app['uniqid'] or even a different version for each data type 
+with $app['*schema name*.uniqid'] (e.g. $app['foo.uniqid']). The default is to generate id using the php function uniqid()
+
+```php
+$app["foo.uniqid"] = $app->protect(function ($data) {
+    return md5(serialize($data));
+});
+```
 
 Thats all. Just keep adding resources and links between those resources to make a useful API.
 
@@ -105,7 +113,7 @@ vendor/bin/phpunit --coverage-html=tests/_support/report/unit
 
 An apache web server is configured to localhost port 8080 (or the one you specified in vagrant up)
 
-The directory tests/smoke contains the code tu run a smoke test in Postman [![Try it in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/9778fd146d5d15460e20)
+The directory tests/smoke contains the code to run a smoke test session in Postman [![Try it in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/9778fd146d5d15460e20)
 
 **Note that the source directory is mounted in /vagrant dir on the virtual host.**
 

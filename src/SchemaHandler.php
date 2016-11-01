@@ -15,7 +15,7 @@ class SchemaHandler
 	/**
 	 * @return string schemaUrl
 	 */
-	static function getSchemaUrl($schemaId, Application $app)
+	static public function getSchemaUrl($schemaId, Application $app)
 	{	
  		static $urlCache =array();
 		
@@ -57,7 +57,7 @@ class SchemaHandler
 	}
 	
 
-	static function register(Application $app, $schemaId=null, $template=null,  array $replacements = array())
+	static public function register(Application $app, $schemaId=null, $template=null,  array $replacements = array())
 	{
 		$handler = new static($schemaId, $template, $replacements);
 		return static::_register($app, $handler->schemaId, $handler->template,  $handler->replacements);

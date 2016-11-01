@@ -91,7 +91,7 @@ class ReadResourceControllerTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException
      */	
-    public function restReadError()
+    public function testReadError()
     {
         $this->app['data.store']->method("contains")
             ->with("/foo/4ee8e29d45851")

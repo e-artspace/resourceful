@@ -34,4 +34,17 @@ class CRUDControllerProviderTest extends PHPUnit_Framework_TestCase
 		    $iterator->next();next($expectedRoutes);
 		}
     }
+	
+	
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     */	
+    public function testConnecWithTwoFooMount()
+    {
+        $app = new Application();
+        $app->register(new ServiceProvider());
+		$app->mount("/schema", new \Resourceful\IndexControllerProvider);
+		$app->mount("/foo", new CRUDControllerProvider('foo'));
+		$app->mount("/bar", new CRUDControllerProvider('foo'));
+    }
 }

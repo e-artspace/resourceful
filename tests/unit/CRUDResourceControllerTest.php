@@ -192,7 +192,7 @@ class CRUDResourceControllerTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @expectedException \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
 	 */	
-    public function testIdsMatch()
+    public function testIdsDoesNotMatch()
     {
 	    $app = $this->appFactory();
         $foo = new \stdClass();
@@ -203,6 +203,7 @@ class CRUDResourceControllerTest extends PHPUnit_Framework_TestCase
 		$crudResourceController = new CRUDResourceController("foo");
         $response = $crudResourceController->update($app,$request, '4ee8e29d45851');
     }
+	
 
 	
 	/******************************************

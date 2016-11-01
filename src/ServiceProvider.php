@@ -22,12 +22,15 @@ class ServiceProvider implements ServiceProviderInterface, BootableProviderInter
 
     public function register(Container $app)
     {
+    	assert($app instanceof Application);
+		
     	$app->register(new TwigServiceProvider());
 		
 		// if true, create schema from templates
 		$app["createDefault"] = true;
 		
 		$app['data.dir'] = sys_get_temp_dir() . '/resourceful';
+		$app['resourceful.templates.dir'] = __DIR__ . "/../templates";
 		
 		// create a storage service for data and schema
 		$app['data.store'] = function($app) {
@@ -71,10 +74,10 @@ class ServiceProvider implements ServiceProviderInterface, BootableProviderInter
 
 		// ensure that schema route exists
 		if( !isset($app['schema.controller'])) {
-    		$app->abort('Schema endpoint not found. Do you have mounted a schema?');
+    		$app->abort(500,'Schema endpoint not found. Do you have mounted a schema?');
     	}
 				
-		$app["twig.loader"]->addLoader(new Twig_Loader_Filesystem(__DIR__ . "/../templates"));
+		$app["twig.loader"]->addLoader(new Twig_Loader_Filesystem($app['resourceful.templates.dir']));
 
 		// Error Handling
         ErrorHandler::register();

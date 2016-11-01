@@ -64,8 +64,37 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
 			'cors.allowCredentials',
 			'cors.exposeHeaders',
 			'cors',
+			'resourceful.templates.dir',
 		) as $propery) {
 			$this->assertTrue(isset($app[$propery]),"$propery is set");
 		}
     }
+
+
+    /**
+     * @expectedException \Symfony\Component\Debug\Exception\ContextErrorException
+	 * @expectedExceptionMessage this should caputured as exception
+     */	
+	public function testBoot()
+	{
+		$ServiceProvider = new ServiceProvider;
+		$app = new Application;
+		$app->register($ServiceProvider);
+		$app->mount("/schema", new \Resourceful\SchemaControllerProvider);
+		$ServiceProvider->boot($app);
+		trigger_error ( 'this should caputured as exception');
+	}
+
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     */	
+	public function testBootNoSchema()
+	{
+		$ServiceProvider = new ServiceProvider;
+		$app = new Application;
+		$app->register($ServiceProvider);
+		$ServiceProvider->boot($app);
+	}
+
 }

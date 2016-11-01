@@ -30,7 +30,6 @@ class IndexControllerProviderTest extends PHPUnit_Framework_TestCase
     }
 	
 	
-
     public function testConnecThrouhMount()
     {
 
@@ -41,5 +40,17 @@ class IndexControllerProviderTest extends PHPUnit_Framework_TestCase
 		$app->mount("/", new IndexControllerProvider)->flush();
 		
 		$this->assertEquals('/', $app["url_generator"]->generate('index'));
+    }
+	
+	
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     */	
+    public function testConnecWithTwoIndexMount()
+    {
+        $app = new Application();
+        $app->register(new ServiceProvider());
+		$app->mount("/myindex", new IndexControllerProvider);
+		$app->mount("/another", new IndexControllerProvider);
     }
 }
