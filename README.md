@@ -95,7 +95,19 @@ git clone https://yourid@bitbucket.org/e-artspace/resourceful.git
 cd resourceful
 ```
 
-The following commands can be used to start a virtual appliance and execute all tests:
+#### Running a virtual appliance with vagrant
+
+The following commands can be used to start a virtual appliance and login to it:
+
+```shell
+PORT=8080 vagrant up
+vagrant ssh
+```
+
+An apache web server is configured to localhost port 8080 (or the one you specified in vagrant up)
+
+#### Run unit tests in vagrant
+The following commands can be used to start execute all unit tests:
 
 ```shell
 PORT=8080 vagrant up
@@ -104,6 +116,8 @@ cd /vagrant
 vendor/bin/phpunit
 ```
 
+**Note that all the project repoistory is mounted (and synced) in /vagrant dir on the virtual host.**
+
 To get a test coverage report:
 
 ```bash
@@ -111,19 +125,23 @@ sudo apt-get install -y php-xdebug
 vendor/bin/phpunit --coverage-html=tests/_support/report/unit
 ```
 
-An apache web server is configured to localhost port 8080 (or the one you specified in vagrant up)
-
-The directory tests/smoke contains the code to run a smoke test session in Postman [![Try it in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/9778fd146d5d15460e20)
-
-**Note that the source directory is mounted in /vagrant dir on the virtual host.**
+#### Run smoke tests in Postman
 
 The virtual appliance http server is mapped on localhost:8080 on the workstation
 
+To run automatic smoke tests (i.e. a quick acceptance test),
+load tests/smoke/smoke_postman_collection_v1.json in [postman](https://www.getpostman.com).
+
+Before running postman test be sure to setup your environment defining KBPROFILER_URL according with
+your network specification (e.g. http://localhost:8080)
+
+#### Destroy virtual appliance
 to destroy the virtual appliance:
 
 ```shell
 vagrant destroy
 ```
+More options with vagrant --help
 
 
 Features
