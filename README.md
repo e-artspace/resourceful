@@ -4,12 +4,13 @@ Resourceful
 [![Code Coverage](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/e-artspace/resourceful/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/e-artspace/resourceful/?branch=master)
 
-This package is inspired by the [jdesrosiers/resourceful project](https://github.com/jdesrosiers/resourceful) project by Jason Desrosiers.
-
-Resourceful is a simple framework designed for rapid prototyping REST/HTTP applications that are mostly CRUD operations.
-It is driven off of JSON Hyper-Schemas.  You use Hyper-Schemas to define your resources and their relationships with
+Resourceful is a simple component designed for rapid prototyping REST JSON resources exposing mostly CRUD operations.
+It is driven off of [JSON Hyper-Schemas](http://json-schema.org/) and [SILEX](http://silex.sensiolabs.org/).  
+You use Hyper-Schemas to define your resources and their relationships with
 each other.  No coding other than writing Hyper-Schemas and registering new resources is required.  You only need to
 worry about your API and not it's implementation.  Proper HTTP response codes and headers are managed automatically.
+
+This package is inspired by the [jdesrosiers/resourceful project](https://github.com/jdesrosiers/resourceful) project by Jason Desrosiers.
 
 How it Works
 ------------
