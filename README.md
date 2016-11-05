@@ -107,7 +107,7 @@ vagrant ssh
 
 An apache web server is configured to localhost port 8080 (or the one you specified in vagrant up)
 
-#### Run unit tests in vagrant
+#### Run unit and functional tests in vagrant
 The following commands can be used to start execute all unit tests:
 
 ```shell
@@ -126,15 +126,12 @@ sudo apt-get install -y php-xdebug
 vendor/bin/phpunit --coverage-html=tests/_support/report/unit
 ```
 
-#### Run smoke tests in Postman
+#### Run smoke system test in Postman
 
 The virtual appliance http server is mapped on localhost:8080 on the workstation
 
-To run automatic smoke tests (i.e. a quick acceptance test),
-load tests/smoke/smoke_postman_collection_v1.json in [postman](https://www.getpostman.com).
+load tests/system/smoke_test_v1.json in [postman](https://www.getpostman.com) runner.
 
-Before running postman test be sure to setup your environment defining KBPROFILER_URL according with
-your network specification (e.g. http://localhost:8080)
 
 #### Destroy virtual appliance
 to destroy the virtual appliance:

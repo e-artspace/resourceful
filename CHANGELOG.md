@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- updated smoke test removing environment variable dependency
+- renamed "smoke" directory to "system" and file 
 
 ## [3.0.0] 2016-01-11
 
