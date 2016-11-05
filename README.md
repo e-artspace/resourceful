@@ -130,7 +130,7 @@ vendor/bin/phpunit --coverage-html=tests/_support/report/unit
 
 The virtual appliance http server is mapped on localhost:8080 on the workstation
 
-load tests/system/smoke_test_v1.json in [postman](https://www.getpostman.com) runner.
+import tests/system/smoke_test_v1.json in [postman](https://www.getpostman.com) and call the runner.
 
 
 #### Destroy virtual appliance
